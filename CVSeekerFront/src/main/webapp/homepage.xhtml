@@ -1,0 +1,498 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>CVSeekerHome</title>
+        <meta name="author" content="Nikola Paunovic"></meta>
+
+    </h:head>
+    <h:body style="padding-top: 60px">
+        <!--<h:outputScript library="holder" name="holder.js" />-->
+        <b:navBar brand="CVSeeker" brandHref="#" inverse="true" fixed="top" fluid="true">
+            
+            <b:navbarLinks pull="right">
+                <b:navLink value="Dobrodošli #{mbPrijava.k1Ime}" disabled = "false"></b:navLink>
+                <b:dropMenu value="Podesavanja" icon="cog">
+                    <h:form>
+                        <b:commandButton icon="log-out" style="" value="Logout" look="link" action="#{mbHome.logout()}" onmouseover="this.style.tgextDecoration = 'none';"/>
+                    </h:form>
+                </b:dropMenu>
+            </b:navbarLinks>
+        </b:navBar>
+        <b:container fluid="true">           
+                <h:form>
+                    <b:column col-sm="3" col-md="2" styleClass="sidebar">
+                        <b:listLinks>
+                            <b:navCommandLink header="" />
+                            <b:navCommandLink href="#" value="CV Lista" action="#{mbHome.postaviFormuZaCVListu()}"  rendered="#{!mbHome.admin}"/>
+                            <b:navCommandLink href="#" value="Napravi novi" action="#{mbHome.postaviFormuZaUnos()}" rendered="#{!mbHome.admin}"/>
+                            <b:navCommandLink href="#" value="Traži" action="#{mbHome.postaviFormuZaSve()}" rendered="#{!mbHome.admin}"/>
+                            <b:navCommandLink href="#" value="Pregled zahteva" action="#{mbHome.postaviFormuZaZahteve()}" rendered="#{!mbHome.admin}"/>
+                            <b:navCommandLink href="#" value="Svi Korisnici" action="#{mbHome.postaviFormuZaPrikazKorisnika()}" rendered="#{mbHome.admin}"/>
+                            <b:navCommandLink href="#" value="Izmena segmenata" action="#{mbHome.postaviFormuZaPrikazSifarnika()}" rendered="#{mbHome.admin}"/>
+                            <b:navCommandLink href="#" value="Elastic search" action="#{mbHome.postaviFormuZaElastic()}" rendered="#{mbHome.admin}"/>
+                        </b:listLinks>
+                    </b:column>
+                </h:form>    
+                <b:column col-sm="9" offset-sm="3" col-md="10" offset="2" styleClass="main">
+                    
+                    <hr/>
+                    <!--<b:row styleClass="placeholders">    
+                    </b:row>-->
+                    <b:row rendered="#{mbHome.prikazTabele}" styleClass="table-responsive">
+                        
+                        <h2>CV Lista korisnika</h2>
+                        <hr/>
+                        <h:form>
+                        <b:dataTable class ="ProfiliKorisnika" select = "true" styleClass="table table-striped" selectionMode="single" value="#{mbHome.listaProfila}" var="item" page-length="10">
+                            <b:dataTableColumn style="width: 5%">
+                                <f:facet name="header" ><h:outputText value="Naziv"/></f:facet>
+                                <h:outputText value="#{item.naziv}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Datum kreiranja" /></f:facet>
+                                <h:outputText value="#{item.datum}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Ime" /></f:facet>
+                                <h:outputText value="#{item.korisnikId.ime}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Prezime" /></f:facet>
+                                <h:outputText value="#{item.korisnikId.prezime}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Opis" /></f:facet>
+                                <h:outputText value="#{item.opis}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 1%">
+                                <f:facet name="header"><h:outputText value="Obrisi" /></f:facet>
+                                <b:commandButton value="" look="info" icon="minus" action="#{mbHome.removeProfil(item)}"/>
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 1%">
+                                <f:facet name="header"><h:outputText value="Edit" /></f:facet>
+                                <b:commandButton value="" look="info" icon="edit" action="#{mbHome.izmenaProfila(item)}" > </b:commandButton>
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 1%">
+                                <f:facet name="header"><h:outputText value="Jasper" /></f:facet>
+                                <b:commandButton value="" look="info" icon="list-alt" action="#{mbHome.jasperProfil(item)}" style="margin-left: 2%">
+                                </b:commandButton>
+                            </b:dataTableColumn>
+                            </b:dataTable>
+                            </h:form>
+                    </b:row>
+                   
+                    <b:row rendered="#{mbHome.prikazFormeZaUnos}">                      
+                        
+                        <h2>Napravi svoj profil</h2>
+                        <hr/>
+                        <h:form>
+                            
+                        <b:panelGrid colSpans="3,3,3,3" size="xs">                           
+                            <b:column>
+                             <h3>Informacije o profilu</h3>  
+                             <b:label text="Naziv"/>                      
+                             <b:inputText id ="txtNaziv"  value="#{mbHome.profil.naziv}" />
+                             <b:label text="Opis"/>
+                             <b:inputText id ="txtOpis"  value="#{mbHome.profil.opis}" />
+                            </b:column>
+                            <b:column>
+                                <!-- -->
+                            </b:column>
+                            <b:column>
+                                <!-- -->
+                            </b:column>
+                        </b:panelGrid>        
+                            
+                        <br></br>
+                         <b:panelGrid colSpans="12" size="xs">
+                             <b:column>
+                                 <h3>Informacije o segmentu</h3>  
+                                 <br></br>
+                                <b:commandButton value="Dodaj segment" look="info" icon="plus" action="#{mbHome.segmentAdd()}" />  
+                             </b:column>   
+                         </b:panelGrid>
+                         <b:panelGrid colSpans="10,2" size="xs">
+                             <b:column> 
+                             <b:dataTable class ="SegmentiProfila" select = "false" styleClass="table table-striped" selectionMode="single" 
+                                             value="#{mbHome.profil.segmentList}" var="itemSegment"
+                                             searching = "false" paginated="false">                              
+                                 <b:dataTableColumn orderable="false" >
+                                   <f:facet name="header" ><h:outputText value="Heading"/></f:facet>
+                                   <!--<h:outputText value="#{itemSegment.heading}" />-->
+                                    <b:selectOneMenu value="#{itemSegment.heading}" colMd="2" labelColMd="2">
+                                        <f:selectItems value="#{mbHome.listaSifarnika}" var="c" itemValue="#{c}" itemLabel="#{c}" />
+                                      </b:selectOneMenu>                                  
+                                </b:dataTableColumn>
+                                <b:dataTableColumn orderable="false">
+                                   <f:facet name="header"><h:outputText value="Opis" /></f:facet>
+                                   <h:inputText value="#{itemSegment.opis}" />
+                                </b:dataTableColumn>
+                                 <b:dataTableColumn orderable="false" style="width: 5%">
+                                     <f:facet name="header"><h:outputText value="" /></f:facet>
+                                    <b:commandButton value="" look="info" icon="minus" action="#{mbHome.segmentRemove(itemSegment)}"/>
+                                </b:dataTableColumn>
+                                <b:dataTableColumn orderable="false" style="width: 5%">
+                                     <f:facet name="header"><h:outputText value="" /></f:facet>
+                                     <b:commandButton value="" look="info" icon="list" action="#{mbHome.setSeg(itemSegment)}"/>
+                                </b:dataTableColumn> 
+                            </b:dataTable> 
+                            </b:column>  
+                        </b:panelGrid>  
+                        <b:panelGrid colSpans="12" size="xs" rendered="#{mbHome.seg == null ? false : true}">
+                             <b:column>
+                                 <h4>Informacije o stavkama</h4>  
+                                <b:commandButton value="Dodaj stavku" look="info" icon="plus" action="#{mbHome.addStavka()}" /> 
+                             </b:column>   
+                         </b:panelGrid>
+                        <b:panelGrid colSpans="8,4" size="xs">
+                             <b:column> 
+                                 <b:dataTable class ="SegmentiProfila" select = "false" styleClass="table table-striped" selectionMode="single" 
+                                              value="#{mbHome.seg.stavkaList}" var="itemStavka"
+                                             searching = "false" paginated="false">                              
+                                <b:dataTableColumn orderable="false">
+                                   <f:facet name="header" ><h:outputText value="Heading1"/></f:facet>
+                                   <h:inputText value="#{itemStavka.heading1}" />-->                                        
+                                </b:dataTableColumn>
+                                <b:dataTableColumn orderable="false">
+                                   <f:facet name="header" ><h:outputText value="Heading2"/></f:facet>
+                                   <h:inputText value="#{itemStavka.heading2}" />-->                                        
+                                </b:dataTableColumn> 
+                                <b:dataTableColumn orderable="false">
+                                   <f:facet name="header" ><h:outputText value="Datum od"/></f:facet>
+                                   <h:inputText value="#{itemStavka.datumOd}" />-->                                        
+                                </b:dataTableColumn>  
+                                <b:dataTableColumn orderable="false">
+                                   <f:facet name="header" ><h:outputText value="Datum do"/></f:facet>
+                                   <h:inputText value="#{itemStavka.datumDo}" />-->                                        
+                                </b:dataTableColumn>       
+                                <b:dataTableColumn orderable="false">
+                                   <f:facet name="header"><h:outputText value="Opis" /></f:facet>
+                                   <h:inputText value="#{itemStavka.opis}" />
+                                </b:dataTableColumn>
+                                 <b:dataTableColumn orderable="false" style="width: 5%">
+                                     <f:facet name="header"><h:outputText value="" /></f:facet>
+                                    <b:commandButton value="" look="info" icon="minus" action="#{mbHome.removeStavka(itemStavka)}"/>
+                                </b:dataTableColumn>
+                            </b:dataTable> 
+                             
+                            </b:column>
+                            
+                        </b:panelGrid>       
+                        <b:panelGrid colSpans="12" size="xs">
+                             <b:column>
+                                <b:commandButton value="" look="info" icon="ok" action="#{mbHome.potvrdaStavki()}" />
+                             </b:column>   
+                         </b:panelGrid>         
+                        <br></br>
+                        <hr/>
+                    
+                            <b:commandButton value="Sacuvaj profil" look="info" icon="edit" action="#{mbHome.sacuvajProfil()}" style="float: right">
+                            </b:commandButton>                           
+                        </h:form>     
+                    </b:row>
+                    
+                    
+                    <b:row rendered="#{mbHome.prikazTabeleSve}" styleClass="table-responsive">
+                        
+                        <h2>Pretrazi sve profile</h2>
+                        <hr/>
+                        <h:form>
+                        <b:dataTable class ="ProfiliSvihKorisnika" select = "true" styleClass="table table-striped" selectionMode="single" value="#{mbHome.listaProfila}" var="item" page-length="10">
+                            <b:dataTableColumn orderable="false" style="width: 5%">
+                                <f:facet name="header" ><h:outputText value="Naziv"/></f:facet>
+                                <h:outputText value="#{item.naziv}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Datum kreiranja" /></f:facet>
+                                <h:outputText value="#{item.datum}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Ime" /></f:facet>
+                                <h:outputText value="#{item.korisnikId.ime}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Prezime" /></f:facet>
+                                <h:outputText value="#{item.korisnikId.prezime}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 5%">
+                                <f:facet name="header"><h:outputText value="Opis" /></f:facet>
+                                <h:outputText value="#{item.opis}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false" style="width: 1%">
+                                <f:facet name="header"><h:outputText value="Jasper" /></f:facet>
+                                <b:commandButton value="" look="info" icon="list-alt" action="#{mbHome.jasperProfil2(item)}" style="margin-left: 2%">
+                                    <!-- <h:commandButton id="basic" value="Basic" onclick="PF('dlg1').show();" type="button" />  
+
+                                     <p:dialog id="basicDialog" header="HELLO" widgetVar="dlg1">  
+                                        <h:outputText value="Hello world!" />  
+                                    </p:dialog> -->
+                                </b:commandButton>
+                                
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                        </h:form>
+                        <h:outputText value="#{mbHome.porukaValidacija1}" style="color: red;"/>
+                        <h:outputText value="#{mbHome.porukaValidacija2}" style="color: red;"/>
+                    </b:row>
+                    
+                    <b:row rendered="#{mbHome.prikazTabeleSvihKorisnika}" styleClass="table-responsive">
+                        
+                        <h2>Svi korisnici</h2>
+                        <hr/>
+                        <b:panelGrid colSpans="12" size="xs">
+                            
+                        <b:column>
+                        <b:dataTable class ="SviKorisnici" select = "true" styleClass="table table-striped" selectionMode="single" value="#{mbHome.listaKorisnika}" var="itemKorisnici" page-length="10">
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header" ><h:outputText value="Id"/></f:facet>
+                                <h:outputText value="#{itemKorisnici.id}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header" ><h:outputText value="Ime"/></f:facet>
+                                <h:outputText value="#{itemKorisnici.ime}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header"><h:outputText value="Prezime" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.prezime}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Username" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.username}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Password" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.password}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="lock" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.lock}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="qstnId" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.qstnId.opis}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="qstnAns" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.qstnAns}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="rolaId" /></f:facet>
+                                <h:outputText value="#{itemKorisnici.rolaId.naziv}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Active" /></f:facet>
+                                <h:form>
+                                    <b:commandButton value="" look="info" icon="check" action="#{mbHome.aktivirajKorisnika(itemKorisnici)}"/>
+                                </h:form>
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Block" /></f:facet>
+                                <h:form>
+                                    <b:commandButton value="" look="info" icon="adjust" action="#{mbHome.blokirajKorisnika(itemKorisnici)}"/>
+                                </h:form>
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                        </b:column>
+                        
+                        </b:panelGrid>
+                        
+                    </b:row>
+                    
+                    
+                    <b:row rendered="#{mbHome.prikazTabeleSifarnika}" styleClass="table-responsive">
+                        
+                        <h2>Segment šifarnik</h2>
+                        <hr/>
+                        <br></br>
+                        <h:form>
+                        <b:panelGrid colSpans="6,6" size="xs">
+                             <b:column>
+                                <b:commandButton value="Dodaj novi" look="info" icon="plus" action="#{mbHome.sifarnikAdd()}" />  
+                             </b:column>   
+                         </b:panelGrid>
+                            
+                        <b:panelGrid colSpans="6,6" size="xs">
+                        <b:column>
+                        <b:dataTable class ="SviSifarnici" select = "false" styleClass="table table-striped" selectionMode="single"
+                                     value="#{mbHome.listaSifarnika}" var="itemSifarnici" searching="false" paginated="false">
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header" ><h:outputText value="Id"/></f:facet>
+                                <h:outputText value="#{itemSifarnici.id}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header" ><h:outputText value="Naziv"/></f:facet>
+                                <h:inputText value="#{itemSifarnici.naziv}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Ukloni" /></f:facet>
+                                    <b:commandButton value="" look="info" icon="minus" action="#{mbHome.sifarnikRemove(itemSifarnici)}"/>    
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                        </b:column>                         
+                        </b:panelGrid>
+                            <br></br>
+                        <b:panelGrid colSpans="6,6" size="xs">
+                             <b:column>
+                                <b:commandButton value="Sacuvaj šifarnik" look="info" icon="edit" action="#{mbHome.sacuvajSifarnik()}" style="float: right">
+                                </b:commandButton> 
+                             </b:column>   
+                        </b:panelGrid>    
+                        </h:form>
+                    </b:row>
+                    
+                    <b:row rendered="#{mbHome.prikazTabeleZahteva}" styleClass="table-responsive">
+                        
+                        <h2>Pregled zahteva</h2>
+                        <hr/>
+                        <br></br>
+                        <h:form>                            
+                        <b:panelGrid colSpans="6,6">
+                        <b:column>
+                        <b:dataTable class ="SviSifarnici" select = "false" styleClass="table table-striped" selectionMode="single"
+                                     value="#{mbHome.listaNotifikacija}" var="itemNotifikacije" searching="false" paginated="false">
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header" ><h:outputText value="Id"/></f:facet>
+                                <h:outputText value="#{itemNotifikacije.id}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="true">
+                                <f:facet name="header" ><h:outputText value="profil"/></f:facet>
+                                <h:outputText value="#{itemNotifikacije.profil}" />
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Prihvati" /></f:facet>
+                                    <b:commandButton value="" look="info" icon="ok" action="#{mbHome.notifikacijaPrihvati(itemNotifikacije)}"/>    
+                            </b:dataTableColumn>
+                            <b:dataTableColumn orderable="false">
+                                <f:facet name="header"><h:outputText value="Prihvati" /></f:facet>
+                                    <b:commandButton value="" look="info" icon="remove" action="#{mbHome.notifikacijaOdbij(itemNotifikacije)}"/>    
+                            </b:dataTableColumn>
+                        </b:dataTable>
+                        </b:column>                         
+                        </b:panelGrid>
+                        </h:form>
+                    </b:row>
+                    
+                    <b:row rendered="#{mbHome.prikazFormeElastic}" >
+                        
+                        <h2>Elastic search</h2>
+                        <hr/>
+                        <br></br>
+                        <h:form>                          
+                        <b:panelGrid colSpans="6,6">
+                        
+                        <b:column>
+                            <b:panelGrid colSpans="6,6">
+                              <b:column>
+                                <b:commandButton value="Kreiraj indeks i popuni korisnicima" look="info" action="#{mbHome.kreiranjeIndeksaKorisnika()}"/>   
+                                <br></br>
+                                <hr/>                               
+                                <b:commandButton value="Kreiraj indeks i popuni sifarnikom" look="info" action="#{mbHome.kreiranjeIndeksaSifarnika()}"/>                   
+                              </b:column> 
+                                
+                              <b:column>
+                                <b:commandButton value="Obrisi indeks korisnika" look="info" action="#{mbHome.obrisiIndeksaKorisnika()}"/>   
+                                <br></br>
+                                <hr/>                               
+                                <b:commandButton value="Obrisi indeks sifarnika" look="info" action="#{mbHome.obrisiIndeksaSifarnika()}" /> 
+                              </b:column> 
+                            </b:panelGrid>  
+                        </b:column>                                              
+                        
+                        <b:column>
+                           
+                                <b:selectOneMenu value="#{mbHome.vrstaPretrage}" >
+                                        <f:selectItem itemLabel="Korisnici" itemValue="1" />
+                                        <f:selectItem itemLabel="Sifarnik" itemValue="2" />
+                              </b:selectOneMenu> 
+                              
+                              <b:inputText id ="txtNaziv"  value="#{mbHome.uslovPretrage}" />
+                              
+                              <b:commandButton id ="myButton" value="Pretraga" look="info" action="#{mbHome.pretraga()}"/>
+                              
+                              <b:inputTextarea placeholder="Rezultat pretrage" value="#{mbHome.rezultatPretrage}"/>
+                              <h:outputText value="#{mbHome.greskaPretrage}" style="color: black;"/>
+                            
+                        </b:column>       
+                        </b:panelGrid>
+                        </h:form>
+                    </b:row>
+                    
+                </b:column>
+        </b:container> 
+        <style type="text/css">
+        .sub-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .navbar-fixed-top {
+            border: 0 none;
+            background-color: #333333;
+        }
+        .sidebar {
+            display: none;
+        }
+        @media (min-width: 768px) {
+        .sidebar {
+            background-color: #cccccc;
+            color: #9d9d9d;
+            border-right: 1px solid #eee;
+            bottom: 0;
+            display: block;
+            left: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 20px;
+            position: fixed;
+            top: 51px;
+            z-index: 1000;
+        }
+        }
+        .nav-list {
+            margin-bottom: 20px;
+            margin-left: -20px;
+            margin-right: -21px;
+        }
+        .nav-list > li > a {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .nav-list > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+            background-color: #222;
+        }
+        .main {
+            padding: 20px;
+        }
+        @media (min-width: 768px) {
+        .main {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+        }
+        .main .page-header {
+            margin-top: 0;
+        }
+        .placeholders {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .placeholders h4 {
+            margin-bottom: 0;
+        }
+        .placeholder {
+            margin-bottom: 20px;
+        }
+        .placeholder img {
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        </style>
+    </h:body>
+</html>
