@@ -1,0 +1,39 @@
+[2018-06-06T14:24:43,186][INFO ][o.e.n.Node               ] [] initializing ...
+[2018-06-06T14:24:43,530][INFO ][o.e.e.NodeEnvironment    ] [6BcdDNt] using [1] data paths, mounts [[(C:)]], net usable_space [29.7gb], net total_space [130.9gb], types [NTFS]
+[2018-06-06T14:24:43,530][INFO ][o.e.e.NodeEnvironment    ] [6BcdDNt] heap size [990.7mb], compressed ordinary object pointers [true]
+[2018-06-06T14:24:43,983][INFO ][o.e.n.Node               ] node name [6BcdDNt] derived from node ID [6BcdDNt0RsugDOJGJW4u6Q]; set [node.name] to override
+[2018-06-06T14:24:43,983][INFO ][o.e.n.Node               ] version[6.2.4], pid[11380], build[ccec39f/2018-04-12T20:37:28.497551Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_144/25.144-b01]
+[2018-06-06T14:24:43,983][INFO ][o.e.n.Node               ] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.io.tmpdir=C:\Users\SOLUNAC\AppData\Local\Temp\elasticsearch, -XX:+HeapDumpOnOutOfMemoryError, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -Delasticsearch, -Des.path.home=C:\Users\SOLUNAC\Downloads\elasticsearch-6.2.4, -Des.path.conf=C:\Users\SOLUNAC\Downloads\elasticsearch-6.2.4\config]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [aggs-matrix-stats]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [analysis-common]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [ingest-common]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [lang-expression]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [lang-mustache]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [lang-painless]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [mapper-extras]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [parent-join]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [percolator]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [rank-eval]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [reindex]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [repository-url]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [transport-netty4]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] loaded module [tribe]
+[2018-06-06T14:24:45,936][INFO ][o.e.p.PluginsService     ] [6BcdDNt] no plugins loaded
+[2018-06-06T14:24:51,536][INFO ][o.e.d.DiscoveryModule    ] [6BcdDNt] using discovery type [zen]
+[2018-06-06T14:24:52,366][INFO ][o.e.n.Node               ] initialized
+[2018-06-06T14:24:52,370][INFO ][o.e.n.Node               ] [6BcdDNt] starting ...
+[2018-06-06T14:24:52,906][INFO ][o.e.t.TransportService   ] [6BcdDNt] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
+[2018-06-06T14:24:56,078][INFO ][o.e.c.s.MasterService    ] [6BcdDNt] zen-disco-elected-as-master ([0] nodes joined), reason: new_master {6BcdDNt}{6BcdDNt0RsugDOJGJW4u6Q}{YtAwQSX2TgCdzzyAemW6Mg}{127.0.0.1}{127.0.0.1:9300}
+[2018-06-06T14:24:56,110][INFO ][o.e.c.s.ClusterApplierService] [6BcdDNt] new_master {6BcdDNt}{6BcdDNt0RsugDOJGJW4u6Q}{YtAwQSX2TgCdzzyAemW6Mg}{127.0.0.1}{127.0.0.1:9300}, reason: apply cluster state (from master [master {6BcdDNt}{6BcdDNt0RsugDOJGJW4u6Q}{YtAwQSX2TgCdzzyAemW6Mg}{127.0.0.1}{127.0.0.1:9300} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)]])
+[2018-06-06T14:24:56,266][INFO ][o.e.h.n.Netty4HttpServerTransport] [6BcdDNt] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
+[2018-06-06T14:24:56,266][INFO ][o.e.n.Node               ] [6BcdDNt] started
+[2018-06-06T14:24:56,543][INFO ][o.e.g.GatewayService     ] [6BcdDNt] recovered [3] indices into cluster_state
+[2018-06-06T14:24:59,591][INFO ][o.e.c.r.a.AllocationService] [6BcdDNt] Cluster health status changed from [RED] to [YELLOW] (reason: [shards started [[micovani][2]] ...]).
+[2018-06-06T14:38:17,974][INFO ][o.e.c.m.MetaDataDeleteIndexService] [6BcdDNt] [korisnici/widgpe5fRam8hAkTJtxnbg] deleting index
+[2018-06-06T14:38:20,208][INFO ][o.e.c.m.MetaDataCreateIndexService] [6BcdDNt] [korisnici] creating index, cause [auto(bulk api)], templates [], shards [5]/[1], mappings []
+[2018-06-06T14:38:21,052][INFO ][o.e.c.m.MetaDataMappingService] [6BcdDNt] [korisnici/R1al70xsSQSjXEKUn2i7Ew] create_mapping [korisnici]
+[2018-06-06T15:34:59,513][INFO ][o.e.b.Bootstrap          ] running graceful exit on windows
+[2018-06-06T15:34:59,513][INFO ][o.e.n.Node               ] [6BcdDNt] stopping ...
+[2018-06-06T15:34:59,582][INFO ][o.e.n.Node               ] [6BcdDNt] stopped
+[2018-06-06T15:34:59,582][INFO ][o.e.n.Node               ] [6BcdDNt] closing ...
+[2018-06-06T15:34:59,597][INFO ][o.e.n.Node               ] [6BcdDNt] closed
