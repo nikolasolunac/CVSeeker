@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 /**
- * Author:  P
- * Created: May 20, 2018
+ * Author:  SOLUNAC
+ * Created: June 5, 2018
  */
 
 INSERT  INTO `profil`(`id`,`korisnikId`,`datum`,`naziv`,`opis`) VALUES (1,1,'2018.01.01','asd','asd');

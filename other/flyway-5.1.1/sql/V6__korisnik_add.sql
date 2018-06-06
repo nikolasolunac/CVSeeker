@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 /**
- * Author:  P
- * Created: May 20, 2018
+ * Author:  SOLUNAC
+ * Created: June 5, 2018
  */
 
 INSERT  INTO `korisnik`(`id`,`ime`,`prezime`,`username`,`password`,`lock`,`qstnId`,`qstnAns`,`rolaId`) 

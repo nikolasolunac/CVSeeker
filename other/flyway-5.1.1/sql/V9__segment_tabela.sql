@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 /**
- * Author:  P
- * Created: May 20, 2018
+ * Author:  SOLUNAC
+ * Created: June 5, 2018
  */
 CREATE TABLE `segment` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
