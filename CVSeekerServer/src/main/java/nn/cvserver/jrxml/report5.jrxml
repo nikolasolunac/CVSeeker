@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report5" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eac74dd8-d5a2-4581-bf5b-3cca94237b2b">
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="ColoredField" forecolor="#666666">
+		<conditionalStyle>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<style name="ColoredField2" forecolor="#404040">
+		<conditionalStyle>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="dataset1" uuid="4d3842dd-f131-455a-a214-ac154042f60d"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Paun\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="param_profilid" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     korisnik.`id` AS korisnik_id,
+     korisnik.`ime` AS korisnik_ime,
+     korisnik.`prezime` AS korisnik_prezime,
+     korisnik.`username` AS korisnik_username,
+     korisnik.`password` AS korisnik_password,
+     korisnik.`lock` AS korisnik_lock,
+     korisnik.`qstnId` AS korisnik_qstnId,
+     korisnik.`qstnAns` AS korisnik_qstnAns,
+     korisnik.`rolaId` AS korisnik_rolaId,
+     profil.`id` AS profil_id,
+     profil.`korisnikId` AS profil_korisnikId,
+     profil.`datum` AS profil_datum,
+     profil.`naziv` AS profil_naziv,
+     profil.`opis` AS profil_opis,
+     segment.`id` AS segment_id,
+     segment.`profilId` AS segment_profilId,
+     segment.`heading` AS segment_heading,
+     segment.`opis` AS segment_opis
+FROM
+     `korisnik` korisnik INNER JOIN `profil` profil ON korisnik.`id` = profil.`korisnikId`
+     INNER JOIN `segment` segment ON profil.`id` = segment.`profilId`
+WHERE profil.`id` = $P{param_profilid}]]>
+	</queryString>
+	<field name="korisnik_id" class="java.lang.Integer"/>
+	<field name="korisnik_ime" class="java.lang.String"/>
+	<field name="korisnik_prezime" class="java.lang.String"/>
+	<field name="korisnik_username" class="java.lang.String"/>
+	<field name="korisnik_password" class="java.lang.String"/>
+	<field name="korisnik_lock" class="java.lang.Boolean"/>
+	<field name="korisnik_qstnId" class="java.lang.Integer"/>
+	<field name="korisnik_qstnAns" class="java.lang.String"/>
+	<field name="korisnik_rolaId" class="java.lang.Integer"/>
+	<field name="profil_id" class="java.lang.Integer"/>
+	<field name="profil_korisnikId" class="java.lang.Integer"/>
+	<field name="profil_datum" class="java.lang.String"/>
+	<field name="profil_naziv" class="java.lang.String"/>
+	<field name="profil_opis" class="java.lang.String"/>
+	<field name="segment_id" class="java.lang.Integer"/>
+	<field name="segment_profilId" class="java.lang.Integer"/>
+	<field name="segment_heading" class="java.lang.String"/>
+	<field name="segment_opis" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="15" y="39" width="100" height="20" uuid="1570cecb-8137-411f-a6d3-e9e6186b6cb7"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{korisnik_ime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="39" width="100" height="20" uuid="dd872f23-dca2-4b8d-823c-20080d5edb46"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{korisnik_prezime}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="68" width="555" height="1" uuid="0d352cda-2201-4c9e-a4e2-cd26003753c9"/>
+			</line>
+			<staticText>
+				<reportElement style="ColoredField" mode="Opaque" x="367" y="39" width="184" height="20" uuid="d4161ebb-ad98-4062-993e-b41b01a87497"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[CURRICULUM VITAE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="11" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="14" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement style="ColoredField" mode="Opaque" x="95" y="4" width="164" height="20" uuid="e21e17bd-e4cb-4fac-812e-6018483327e1"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{segment_heading}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="95" y="25" width="200" height="100" uuid="acb916d9-585b-4da9-a845-6fd5711b12fa"/>
+				<subreportParameter name="param_segmentid">
+					<subreportParameterExpression><![CDATA[$F{segment_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report5_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

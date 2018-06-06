@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report5_subreport1" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1888ea6d-039a-4fe8-b2a3-f704fddaa85f">
+	<property name="ireport.zoom" value="1.7715610000000037"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="ColoredField2" forecolor="#404040">
+		<conditionalStyle>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<parameter name="param_segmentid" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     stavka.`id` AS stavka_id,
+     stavka.`segmentId` AS stavka_segmentId,
+     stavka.`datumOd` AS stavka_datumOd,
+     stavka.`datumDo` AS stavka_datumDo,
+     stavka.`heading1` AS stavka_heading1,
+     stavka.`heading2` AS stavka_heading2,
+     stavka.`opis` AS stavka_opis
+FROM
+     `stavka` stavka
+WHERE stavka.`segmentId` = $P{param_segmentid}]]>
+	</queryString>
+	<field name="stavka_id" class="java.lang.Integer"/>
+	<field name="stavka_segmentId" class="java.lang.Integer"/>
+	<field name="stavka_datumOd" class="java.lang.String"/>
+	<field name="stavka_datumDo" class="java.lang.String"/>
+	<field name="stavka_heading1" class="java.lang.String"/>
+	<field name="stavka_heading2" class="java.lang.String"/>
+	<field name="stavka_opis" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="10" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="8" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="10" width="95" height="20" uuid="03d7f467-a5fe-4b76-ad32-4509e2433a67"/>
+				<textFieldExpression><![CDATA[$F{stavka_datumOd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="ColoredField2" mode="Opaque" x="174" y="10" width="100" height="20" uuid="cca9d0f0-cd61-49e1-b815-f0b48f293361"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stavka_heading1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="10" width="100" height="20" uuid="c89a4ccb-9b7c-42f7-b7c8-e3d6f31ed221"/>
+				<textFieldExpression><![CDATA[$F{stavka_datumDo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="50" width="100" height="20" uuid="2d99d29c-a35f-4b73-97ec-85b147747176"/>
+				<textFieldExpression><![CDATA[$F{stavka_opis}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="30" width="100" height="20" uuid="c1a93069-1963-4db0-961a-0e37bbe6ea64"/>
+				<textFieldExpression><![CDATA[$F{stavka_heading2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="65" y="10" width="4" height="20" uuid="7004f4c6-f98d-4e64-be41-4e56bf115af2"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
