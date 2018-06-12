@@ -160,18 +160,22 @@ public class MBPrijava implements Serializable {
         validacijaUsera();
         k1.setUsername(username);
         k1.setPassword(password);
-        token = KontrolerKI.getInstance().prijava(k1);
+        token = KontrolerKI.getInstance("").prijava(k1);
      
         if (token == "Unknown user." || token == null){
             porukaPrijava = "Pogresno korisničko ime ili lozinka";
             return "index.xhtml";
         }
         else{
-            k1.setToken(token);
-            k1 = (Korisnik) KontrolerKI.getInstance().vratiKorisnka(k1);        
-            
             FacesContext facesContext = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+            
+            k1.setToken(token);
+            
+            session.setAttribute("token", k1.getToken());
+            
+            k1 = (Korisnik) KontrolerKI.getInstance(token).vratiKorisnka(k1);        
+           
             session.setAttribute("id", k1.getId());
             session.setAttribute("ime", k1.getIme());
             session.setAttribute("prezime", k1.getPrezime());
@@ -181,7 +185,7 @@ public class MBPrijava implements Serializable {
             session.setAttribute("qstnId", k1.getQstnId());
             session.setAttribute("qstnAns", k1.getQstnAns());
             session.setAttribute("rolaId", k1.getRolaId());
-            session.setAttribute("token", k1.getToken());
+            
             
             if(k1.getLock() == true){
                 porukaPrijava = "Vaš nalog je blokiran";
@@ -209,7 +213,7 @@ public class MBPrijava implements Serializable {
              k.setUsername(username);
              k.setQstnAns(odgovorQstnAns);
              k.setPassword(noviPassword);
-             boolean uspesanReset = KontrolerKI.getInstance().resetLozinke(k);
+             boolean uspesanReset = KontrolerKI.getInstance("").resetLozinke(k);
              if (uspesanReset)
              {
                  labelaZaPovratakLozinke = "Uspešno je postavljena nova lozinka";

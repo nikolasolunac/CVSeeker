@@ -114,6 +114,22 @@ public class MBHome implements Serializable{
     private static final DateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
     
     public MBHome() {
+            
+      FacesContext facesContext = FacesContext.getCurrentInstance();
+      HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        
+      this.k1 = new Korisnik();
+      k1.setId((Integer) session.getAttribute("id"));
+      k1.setIme(session.getAttribute("ime").toString());
+      k1.setPrezime(session.getAttribute("prezime").toString());      
+      k1.setUsername(session.getAttribute("username").toString());
+      k1.setPassword(session.getAttribute("password").toString());
+      k1.setLock((Boolean) session.getAttribute("lock"));
+      k1.setQstnId((Secretqstn) session.getAttribute("qstnId"));
+      k1.setQstnAns(session.getAttribute("qstnAns").toString());
+      k1.setRolaId((Rola) session.getAttribute("rolaId"));
+      k1.setToken(session.getAttribute("token").toString());
+      
       if (!(k1.getRolaId().getId() == 1)) 
       {
         this.prikazTabele = true;  
@@ -156,21 +172,6 @@ public class MBHome implements Serializable{
               }
           }
       }
-      
-      FacesContext facesContext = FacesContext.getCurrentInstance();
-      HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-
-      this.k1 = new Korisnik();
-      k1.setId((Integer) session.getAttribute("id"));
-      k1.setIme(session.getAttribute("ime").toString());
-      k1.setPrezime(session.getAttribute("prezime").toString());      
-      k1.setUsername(session.getAttribute("username").toString());
-      k1.setPassword(session.getAttribute("password").toString());
-      k1.setLock((Boolean) session.getAttribute("lock"));
-      k1.setQstnId((Secretqstn) session.getAttribute("qstnId"));
-      k1.setQstnAns(session.getAttribute("qstnAns").toString());
-      k1.setRolaId((Rola) session.getAttribute("rolaId"));
-      k1.setToken(session.getAttribute("token").toString());
       
       //vratiSveProfile();  
       vratiSveSifarnike();
@@ -219,14 +220,14 @@ public class MBHome implements Serializable{
     
     public void sifarnikRemove(Sifarnik s)
     {
-        KontrolerKI.getInstance().obrisiSifarnik(s);
+        KontrolerKI.getInstance(k1.getToken()).obrisiSifarnik(s);
         listaSifarnika.remove(s);
     }
     
     public void sacuvajSifarnik()
     {
         for (Sifarnik s : listaSifarnika) {
-        KontrolerKI.getInstance().sacuvajSifarnik(s);        
+        KontrolerKI.getInstance(k1.getToken()).sacuvajSifarnik(s);        
         }
         vratiSveSifarnike();
         
@@ -235,14 +236,14 @@ public class MBHome implements Serializable{
     public void aktivirajKorisnika(Korisnik k)
     {
         k.setLock(false);
-        KontrolerKI.getInstance().registracija(k);
+        KontrolerKI.getInstance(k1.getToken()).registracija(k);
     }
     
     public void notifikacijaPrihvati(Notifikacija n)
     {
         n.setFlagOdobreno(true);
         n.setFlagPrikazana(true);        
-        KontrolerKI.getInstance().SacuvajNotifikaciju(n);
+        KontrolerKI.getInstance(k1.getToken()).SacuvajNotifikaciju(n);
         vratiSveNotifikacije();    
     }
     
@@ -250,14 +251,14 @@ public class MBHome implements Serializable{
     {
         n.setFlagOdobreno(false);
         n.setFlagPrikazana(true);
-        KontrolerKI.getInstance().SacuvajNotifikaciju(n);
+        KontrolerKI.getInstance(k1.getToken()).SacuvajNotifikaciju(n);
         vratiSveNotifikacije(); 
     }
     
     public void blokirajKorisnika(Korisnik k)
     {
         k.setLock(true);
-        KontrolerKI.getInstance().registracija(k); 
+        KontrolerKI.getInstance(k1.getToken()).registracija(k); 
     }
     
     public void potvrdaStavki()
@@ -340,7 +341,7 @@ public class MBHome implements Serializable{
         }
         boolean mozeValidacija = false;
         Notifikacija nTemp = new Notifikacija();
-        List<Notifikacija> listaNotifikacija2 = (List<Notifikacija>)(List<?>)KontrolerKI.getInstance().vratiSveNotifikacije();
+        List<Notifikacija> listaNotifikacija2 = (List<Notifikacija>)(List<?>)KontrolerKI.getInstance(k1.getToken()).vratiSveNotifikacije();
         for(Notifikacija n : listaNotifikacija2){
                if((n.getVlasnikZahteva() == k1.getId()) && (n.getValsnikProfila()== p.getKorisnikId().getId())
                 && (n.getProfil()== p.getId()) )
@@ -350,7 +351,7 @@ public class MBHome implements Serializable{
                }                
             }   
         if(mozeValidacija){                       
-            if (KontrolerKI.getInstance().ValidirajNotifikaciju(nTemp))
+            if (KontrolerKI.getInstance(k1.getToken()).ValidirajNotifikaciju(nTemp))
             {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                 context.redirect("http://localhost:8080/profil/jasper/"+p.getId());
@@ -365,14 +366,14 @@ public class MBHome implements Serializable{
             Notifikacija n = new Notifikacija(0, p.getId(), p.getKorisnikId().getId(), k1.getId(), new Timestamp(System.currentTimeMillis()));           
             n.setFlagPrikazana(false);
             n.setFlagOdobreno(false);
-            KontrolerKI.getInstance().SacuvajNotifikaciju(n);
+            KontrolerKI.getInstance(k1.getToken()).SacuvajNotifikaciju(n);
             porukaValidacija2 = "* Poslat je zahtev. Ceka se odobrenje.";
         }
     }
     
     public void removeProfil(Profil p)
     {
-        KontrolerKI.getInstance().obrisiProfil(p);
+        KontrolerKI.getInstance(k1.getToken()).obrisiProfil(p);
         vratiSveProfileZaKorisnika();
         //listaProfila.remove(p);
     }
@@ -385,7 +386,7 @@ public class MBHome implements Serializable{
     
     public void vratiSveProfile()
     {
-        listaProfila = (List<Profil>)(List<?>)KontrolerKI.getInstance().vratiSveProfile();   
+        listaProfila = (List<Profil>)(List<?>)KontrolerKI.getInstance(k1.getToken()).vratiSveProfile();   
         listaProfila = new LinkedList<>(listaProfila);
     }
     
@@ -394,24 +395,24 @@ public class MBHome implements Serializable{
         //globalni korisnik k ekser za sada
         //Korisnik k = new Korisnik(1);
         k1.getUsername();
-        listaProfila = (List<Profil>)(List<?>)KontrolerKI.getInstance().vratiProfileKorisnika(k1);
+        listaProfila = (List<Profil>)(List<?>)KontrolerKI.getInstance(k1.getToken()).vratiProfileKorisnika(k1);
     }
     
     public void vratiSveKorisnike()
     {
-        listaKorisnika = (List<Korisnik>)(List<?>)KontrolerKI.getInstance().vratiSveKorisnike();   
+        listaKorisnika = (List<Korisnik>)(List<?>)KontrolerKI.getInstance(k1.getToken()).vratiSveKorisnike();   
         listaKorisnika = new LinkedList<>(listaKorisnika);
     }
     
     public void vratiSveSifarnike()
     {
-        listaSifarnika = (List<Sifarnik>)(List<?>)KontrolerKI.getInstance().vratiSifarnike();   
+        listaSifarnika = (List<Sifarnik>)(List<?>)KontrolerKI.getInstance(k1.getToken()).vratiSifarnike();   
         listaSifarnika = new LinkedList<>(listaSifarnika);
     }
     
     public void vratiSveNotifikacije()
     {
-        listaNotifikacija = (List<Notifikacija>)(List<?>)KontrolerKI.getInstance().vratiNotifikacijeKorisnika(k1);   
+        listaNotifikacija = (List<Notifikacija>)(List<?>)KontrolerKI.getInstance(k1.getToken()).vratiNotifikacijeKorisnika(k1);   
         if(listaNotifikacija != null)
         {
             listaNotifikacija = new LinkedList<>(listaNotifikacija);
@@ -569,7 +570,7 @@ public class MBHome implements Serializable{
         profil.setKorisnikId(k1);
         Date date = new Date();
         profil.setDatum(sdf.format(date));
-        KontrolerKI.getInstance().sacuvajProfil(profil);
+        KontrolerKI.getInstance(k1.getToken()).sacuvajProfil(profil);
         postaviFormuZaCVListu();
     }
     
