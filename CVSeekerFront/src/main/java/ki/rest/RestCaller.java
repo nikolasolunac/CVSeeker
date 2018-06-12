@@ -10,6 +10,8 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import jsf.mb.MBPrijava;
 
 /**
@@ -31,6 +33,8 @@ public class RestCaller {
         }
         return instance;
     }
+    
+    private Object session;
     
     private void resolveAdresaResursa(String roe, Integer i)
     {
@@ -134,7 +138,10 @@ public class RestCaller {
         
         if (trebaToken) //iscupati ekser tokena
         {   
-            con.setRequestProperty("NN-TOKEN", MBPrijava.token);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+            
+            con.setRequestProperty("NN-TOKEN", session.getAttribute("token").toString());
         }
         
         if ((operacija.equals(RestHttpOperationEnum.POST.toString())) && (json.length() > 0))
