@@ -125,7 +125,7 @@ public class RestCaller {
     }
     
     
-   public String pozoviRestServis(String json, String roe, Integer id) throws Exception
+   public String pozoviRestServis(String json, String roe, Integer id, String token) throws Exception
     {      
         resolveAdresaResursa(roe, id);
         
@@ -137,11 +137,8 @@ public class RestCaller {
 	con.setRequestMethod(operacija);
         
         if (trebaToken) //iscupati ekser tokena
-        {   
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-            
-            con.setRequestProperty("NN-TOKEN", session.getAttribute("token").toString());
+        {             
+            con.setRequestProperty("NN-TOKEN", token);
         }
         
         if ((operacija.equals(RestHttpOperationEnum.POST.toString())) && (json.length() > 0))
