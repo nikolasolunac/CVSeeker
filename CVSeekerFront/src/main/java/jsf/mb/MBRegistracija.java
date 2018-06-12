@@ -19,7 +19,7 @@ import ki.kontroler.KontrolerKI;
  * @author SOLUNAC
  */
 @Named(value = "mbRegistracija")
-@SessionScoped
+@javax.enterprise.context.RequestScoped
 public class MBRegistracija implements Serializable{
               
     Korisnik k;
@@ -50,7 +50,7 @@ public class MBRegistracija implements Serializable{
     
     public MBRegistracija() {
         
-       secretQstnId = (Secretqstn) KontrolerKI.getInstance().TajnoPitanje(); 
+       secretQstnId = (Secretqstn) KontrolerKI.getInstance("").TajnoPitanje(); 
        //secretQstnId = KontrolerKI.dajMiSctQstn
 
     }
@@ -72,7 +72,7 @@ public class MBRegistracija implements Serializable{
             rolaId = new Rola(2);
             k.setRolaId(rolaId);
             
-            uspesnaRegistracija = KontrolerKI.getInstance().registracija(k); 
+            uspesnaRegistracija = KontrolerKI.getInstance("").registracija(k); 
 
         }
         
