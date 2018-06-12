@@ -29,10 +29,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import static jsf.mb.MBPrijava.k1;
+import javax.servlet.http.HttpSession;
+
 import ki.domen.Korisnik;
 import ki.domen.Notifikacija;
 import ki.domen.Profil;
+import ki.domen.Rola;
+import ki.domen.Secretqstn;
 import ki.domen.Segment;
 import ki.domen.Sifarnik;
 import ki.domen.Stavka;
@@ -52,8 +55,10 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author SOLUNAC
  */
 @Named(value = "mbHome")
-@SessionScoped
+@javax.enterprise.context.SessionScoped
 public class MBHome implements Serializable{
+    
+    Korisnik k1;
     
     private Profil profil;
     /*private String naziv;
@@ -151,6 +156,22 @@ public class MBHome implements Serializable{
               }
           }
       }
+      
+      FacesContext facesContext = FacesContext.getCurrentInstance();
+      HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+
+      this.k1 = new Korisnik();
+      k1.setId((Integer) session.getAttribute("id"));
+      k1.setIme(session.getAttribute("ime").toString());
+      k1.setPrezime(session.getAttribute("prezime").toString());      
+      k1.setUsername(session.getAttribute("username").toString());
+      k1.setPassword(session.getAttribute("password").toString());
+      k1.setLock((Boolean) session.getAttribute("lock"));
+      k1.setQstnId((Secretqstn) session.getAttribute("qstnId"));
+      k1.setQstnAns(session.getAttribute("qstnAns").toString());
+      k1.setRolaId((Rola) session.getAttribute("rolaId"));
+      k1.setToken(session.getAttribute("token").toString());
+      
       //vratiSveProfile();  
       vratiSveSifarnike();
       vratiSveProfileZaKorisnika();
@@ -545,7 +566,7 @@ public class MBHome implements Serializable{
     
     public void sacuvajProfil()
     {
-        profil.setKorisnikId(MBPrijava.k1);
+        profil.setKorisnikId(k1);
         Date date = new Date();
         profil.setDatum(sdf.format(date));
         KontrolerKI.getInstance().sacuvajProfil(profil);

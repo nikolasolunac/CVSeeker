@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import ki.domen.Korisnik;
 import ki.domen.Profil;
 import ki.domen.Rola;
@@ -34,13 +35,15 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @author SOLUNAC
  */
 @Named(value = "mbPrijava")
-@SessionScoped
+@javax.enterprise.context.RequestScoped
 public class MBPrijava implements Serializable {
 
+    Korisnik k1;
+    
     String username;
     String password;
-    public static Korisnik k1;
-    public static String token = "";
+    
+    String token = "";
     
     String porukaPrijava;
     
@@ -58,6 +61,7 @@ public class MBPrijava implements Serializable {
      * Creates a new instance of MBPrijava
      */
     public MBPrijava() {
+        this.k1 = new Korisnik();
         //KontrolerKI.getInstance();
     }
     
@@ -117,7 +121,7 @@ public class MBPrijava implements Serializable {
     }
     */
     
-    public String prijaviKorisnika() {
+    /*public String prijaviKorisnika() {
         porukaPrijava = "";
         if(username.isEmpty() || password.isEmpty())
         {
@@ -143,8 +147,58 @@ public class MBPrijava implements Serializable {
             }
             return "homepage.xhtml";
         }
+    }*/
+        
+    public String prijaviKorisnika() {
+        porukaPrijava = "";
+        if(username.isEmpty() || password.isEmpty())
+        {
+            porukaPrijava = "Molimo unesite korisničko ime i lozinku";
+            return "index.xhtml";
+        }     
+        k1 = new Korisnik();
+        validacijaUsera();
+        k1.setUsername(username);
+        k1.setPassword(password);
+        token = KontrolerKI.getInstance().prijava(k1);
+     
+        if (token == "Unknown user." || token == null){
+            porukaPrijava = "Pogresno korisničko ime ili lozinka";
+            return "index.xhtml";
+        }
+        else{
+            k1.setToken(token);
+            k1 = (Korisnik) KontrolerKI.getInstance().vratiKorisnka(k1);        
+            
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+            session.setAttribute("id", k1.getId());
+            session.setAttribute("ime", k1.getIme());
+            session.setAttribute("prezime", k1.getPrezime());
+            session.setAttribute("username", k1.getUsername());
+            session.setAttribute("password", k1.getPassword());
+            session.setAttribute("lock", k1.getLock());
+            session.setAttribute("qstnId", k1.getQstnId());
+            session.setAttribute("qstnAns", k1.getQstnAns());
+            session.setAttribute("rolaId", k1.getRolaId());
+            session.setAttribute("token", k1.getToken());
+            
+            if(k1.getLock() == true){
+                porukaPrijava = "Vaš nalog je blokiran";
+                return "index.xhtml";
+            }
+            return "homepage.xhtml";
+        }
+        
     }
     
+    public String logout() 
+    {
+	FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+	session.invalidate();
+	return "index.xhtml";
+    }
     
     public void povratakIzgubljeneLozinke()
     {    
@@ -194,12 +248,12 @@ public class MBPrijava implements Serializable {
         this.password = password;
     }
 
-    public static Korisnik getK1() {
+    public Korisnik getK1() {
         return k1;
     }
 
-    public static void setK1(Korisnik k1) {
-        MBPrijava.k1 = k1;
+    public void setK1(Korisnik k1) {
+        this.k1 = k1;
     }
 
     public String getPorukaPrijava() {
