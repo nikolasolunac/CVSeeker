@@ -21,6 +21,16 @@ public abstract class AbstractSO {
     String jsonRequest = "";
     String jsonResponse = "";
     
+    String token = "";
+         
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
     public String ObjectToJSON(IDomenKI ODKI)
     {
         return JSONConverter.getInstance().ObjectToJSON(ODKI);
@@ -84,7 +94,7 @@ public abstract class AbstractSO {
         
         try {
             
-            return RestCaller.getInstance().pozoviRestServis(json, roe, i);
+            return RestCaller.getInstance().pozoviRestServis(json, roe, i, token);
             
         } catch (Exception ex) {
             Logger.getLogger(AbstractSO.class.getName()).log(Level.SEVERE, "AbstractSO.pozoviRestServis: "+ex.getMessage(), ex);
