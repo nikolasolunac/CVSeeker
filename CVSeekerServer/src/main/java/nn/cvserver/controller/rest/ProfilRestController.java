@@ -118,13 +118,13 @@ public class ProfilRestController {
         try {
             Profil p = profilService.findByID(id);
 
-            String sourceFileName = "C:\\Users\\Paun\\Desktop\\05.07\\CVServer\\src\\main\\java\\nn\\cvserver\\jrxml\\report5.jrxml";
+            String sourceFileName = "C:\\Users\\SOLUNAC\\Desktop\\CVSeeker-master\\CVSeekerServer\\src\\main\\java\\nn\\cvserver\\jrxml\\report5.jrxml";
             JasperReport jasperReport = JasperCompileManager.compileReport(sourceFileName);
             Map<String,Object> params = new HashMap<String,Object>();
             params.put("param_profilid", p.getId());
 
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nn_nst_2018",  "root", "");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nn_nst_2018",  "root", "1111");
             JasperPrint reportPrint = JasperFillManager.fillReport(jasperReport, params, con);
             JasperExportManager.exportReportToPdfFile(reportPrint,"tmp.pdf");
             
