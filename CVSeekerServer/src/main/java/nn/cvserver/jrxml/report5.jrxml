@@ -15,7 +15,7 @@
 	</style>
 	<subDataset name="dataset1" uuid="4d3842dd-f131-455a-a214-ac154042f60d"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Paun\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\Users\\SOLUNAC\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="param_profilid" class="java.lang.Integer"/>
 	<queryString language="SQL">
